@@ -168,3 +168,28 @@ Before starting a new session, remember to do a `git pull` and keep your tools u
 Each time forward progress is made, remember to git add-commit-push.
 
 
+
+Explain the cleaning requirements for your specific data.
+Keep columns BIRTHDATE, DEATHDATE, GENDER, RACE, ETHNICITY,'MARITAL' , CITY, COUNTY, BIRTHPLACE, STATE, ZIP (with imputation), HEALTHCARE_EXPENSES, HEALTHCARE_COVERAGE, LAT ,  LON
+Drop columns Id, SSN, DRIVERS, PASSPORT, PREFIX, FIRST, LAST, SUFFIX, MAIDEN, ADDRESS
+handling missing values like DEATHDATE
+Impute missing values like Deathdtate, placeholder like 9999-12-31, marital
+BIRTHDATE, DEATHDATE  ==> standardzing date formats
+Derive new variables: create age from birthdate, Age can be calculated based on the birthdate and today or deathdate - birthdate
+Impute missing values for healthcare expenses.
+LAT, LON: Ensure these are numeric form
+check for the outliers in healthcare expenses.
+date formats for start stop dates in conditions dataframe
+derive duration based on start and stop dates
+if the disease is continuing, then derive active condition variable
+count number of diseases by patient.
+handle overlapping coditions by patient
+
+
+
+How can deathdate be apply predictive imputation techniques like regression or k-nearest neighbors (KNN) if there is sufficient data. MARITAL column can be imputed based on the most frequent value or use a statistical imputation method (like KNN imputation) to fill in the missing entries.
+
+One-hot encoding for categorical data
+use Interquartile Range (IQR) or Z-scores to detect and handle outliers.
+Utilization intensity (patients seeing many providers with high utilization may be sicker).
+Geographic access (distance to providers).
