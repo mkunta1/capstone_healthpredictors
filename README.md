@@ -185,7 +185,7 @@ if the disease is continuing, then derive active condition variable
 count number of diseases by patient.
 handle overlapping coditions by patient
 
-
+##feature engineering Number of Providers a Patient Has Seen
 
 How can deathdate be apply predictive imputation techniques like regression or k-nearest neighbors (KNN) if there is sufficient data. MARITAL column can be imputed based on the most frequent value or use a statistical imputation method (like KNN imputation) to fill in the missing entries.
 
@@ -193,3 +193,75 @@ One-hot encoding for categorical data
 use Interquartile Range (IQR) or Z-scores to detect and handle outliers.
 Utilization intensity (patients seeing many providers with high utilization may be sicker).
 Geographic access (distance to providers).
+Average expense by age group, race, gender.
+coverge analyssis. healthcare expenses vs healthcare_coverage
+most commonidagnissi in the population
+
+
+Predictive modeling of healthcare risk
+
+Use patients + conditions + procedures + medications + immunizations + demographics to predict high-risk patients or insurance costs.
+
+Healthcare utilization analysis
+
+Combine encounters + procedures + imaging + devices + careplans to see which patients consume the most resources.
+
+
+
+### Summary on patients data
+Demographic Insights
+
+The patient population is evenly split between males and females, ensuring gender-balanced modeling. The racial and ethnic composition is predominantly White and non-Hispanic, which reflects the Massachusetts population but reduces demographic diversity. This limitation may affect generalizability to more diverse populations.
+
+Geographic Insights
+
+All patients reside within Massachusetts, with the largest representation from Middlesex, Worcester, and Suffolk counties. This enables county-level geographic analysis even though ZIP code data is partially missing.
+
+Marital Status
+
+Over half of the patients are married, while 29% have unknown marital status. This missingness is likely systemic and should be handled using an “Unknown” category during modeling.
+
+Age Distribution
+
+The dataset is older-skewed, with nearly half of the patients aged 50 and above. Because older adults have higher healthcare utilization and chronic disease rates, age is expected to be a key predictor in risk modeling.
+
+A single subplot with all demographics combined (stacked bars)
+
+## Further steps
+
+✔ Demographic analysis --> Age vs healthcare cost, Gender differences in conditions, Race/ethnicity differences in immunizations
+
+✔ Geographic analysis --> County-level heatmaps, Average cost per county, Condition prevalence per county
+
+✔ Predictive modeling --> Use age, gender, race, immunizations, and chronic conditions to predict, high-risk vs low-risk, healthcare expenses
+I need next steps of preparing data in vs code for patients, conditions and immunizations datasets
+
+## syntax:
+-- To count the frequency value_counts(),  dropna=False argument ensures that missing values (NaN) are also counted. freq = df['Gender'].value_counts()
+-- find the data type: patients2.dtypes ==> This shows each column and its type (int64, float64, object, datetime64[ns], etc.).
+import pandas as pd
+-- read file as csv ==> patients1 = pd.read_csv('C:\\Users\\Mahi2\\capstone\\capstone_healthpredictors\\data\\patients.csv')
+-- gives first few rows in a dataframe: print(patients1.head().to_string()) => Converts the DataFrame into a plain text string
+-- gives number of rows and columns: patients1.shape ==> Returns a tuple (rows, columns)
+-- gives columns as a list : patients1.columns.tolist() ==> gives columns []
+-- slice first 8 characters in a column: patients1['Id'].str[:8] ==> slices the first 8 characters here.
+-- Handling Missing Values: missing_counts = patients1.isnull().sum()
+missing_percent = patients1.isnull().mean() * 100
+-- patients2 = patients1.copy()
+-- convert to integer: df['Age'] = df['Age'].astype(int)
+-- convert to string : df['Id'] = df['Id'].astype(str)
+-- convert to float : df['Age'] = df['Age'].astype(float)
+-- convert to category : df['Gender'] = df['Gender'].astype('category')
+
+
+# Example data
+data = {
+    'Id': [1, 2, 3],
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 22],
+    'Gender': ['F', 'M', 'M']
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
