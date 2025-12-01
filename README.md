@@ -167,12 +167,125 @@ Before starting a new session, remember to do a `git pull` and keep your tools u
 
 Each time forward progress is made, remember to git add-commit-push.
 
+# Health Insurance Risk Prediction
+
+## Project Overview
+
+This project aims to predict health insurance risk using patient, conditions, and immunizations datasets. The goal is to identify high-risk patients, understand healthcare utilization, and analyze factors driving healthcare costs.
+
+Advanced analytics techniques are applied to clean, preprocess, and engineer features from raw healthcare data, followed by predictive modeling to forecast patient risk and insurance costs.
+
+---
+
+## 1. Data Sources
+
+- **Patients:** Demographics including age, gender, race, ethnicity, marital status, and geographic information (city, county, state, ZIP, LAT, LON).
+- **Conditions:** Clinical diagnoses, chronic conditions, start/stop dates.
+- **Immunizations:** Vaccine types, dates, and costs.
+
+Publicly available data is sourced from [Synthea Synthetic Health Data](https://github.com/synthetichealth/synthea-sample-data).
+
+---
+
+## 2. Data Cleaning & Preparation
+
+### Columns to Keep
+`BIRTHDATE`, `DEATHDATE`, `GENDER`, `RACE`, `ETHNICITY`, `MARITAL`, `CITY`, `COUNTY`, `BIRTHPLACE`, `STATE`, `ZIP`, `HEALTHCARE_EXPENSES`, `HEALTHCARE_COVERAGE`, `LAT`, `LON`.
+
+### Columns to Drop
+`Id`, `SSN`, `DRIVERS`, `PASSPORT`, `PREFIX`, `FIRST`, `LAST`, `SUFFIX`, `MAIDEN`, `ADDRESS`.
+
+### Handling Missing Values
+- **DEATHDATE:** Impute with placeholders (e.g., `9999-12-31`) or predictive imputation (regression/KNN).
+- **MARITAL:** Use most frequent value or KNN imputation.
+- **HEALTHCARE_EXPENSES:** Impute missing values using median/mean per age group or demographic.
+- **ZIP, LAT, LON:** Ensure correct formats and numeric types.
+
+### Date Standardization
+- Convert `BIRTHDATE` and `DEATHDATE` to `datetime`.
+- Conditions `START` and `STOP` dates standardized.
+- Duration of each condition derived; flag active conditions.
+
+### Feature Engineering
+- Patient-level aggregates: number of conditions, number of active conditions, comorbidity index.
+- Number of providers seen by a patient.
+- Utilization intensity (high utilizers may indicate sicker patients).
+- Geographic access (distance to providers).
+- One-hot encode categorical features (`Gender`, `Race`, `Marital`, `City`).
+- Detect outliers using IQR or Z-scores.
+
+---
+
+## 3. Exploratory Data Analysis (EDA)
+
+### Demographic Insights
+- Gender: roughly balanced between male and female.
+- Race/Ethnicity: predominantly White and non-Hispanic.
+- Age: skewed older; nearly half of patients aged 50+.
+- Marital Status: over half married; 29% unknown.
+
+### Geographic Insights
+- All patients reside in Massachusetts; largest representation from Middlesex, Worcester, Suffolk counties.
+
+### Healthcare Insights
+- Patients with multiple chronic conditions have higher healthcare costs.
+- Vaccination patterns vary by age and gender; pediatric compliance is highest, middle-aged adults lower, seniors increase again for flu/COVID.
+
+---
+
+## 4. Advanced Features
+
+- Chronic condition counts and flags (diabetes, hypertension, heart disease, COPD/asthma, cancer).
+- Active condition indicators.
+- Number of vaccines received and unique vaccine types.
+- Derived variables: age from birthdate, duration of conditions.
+- Provider utilization intensity.
+- Geographic access measures.
+- Average healthcare expense by age group, gender, and race.
+
+---
+
+## 5. Predictive Modeling
+
+- Combine patients + conditions + immunizations + procedures + medications to predict:
+  - High-risk patients
+  - Insurance costs
+- Models used: Linear Regression, LASSO, Random Forest, Logistic Regression.
+
+---
+
+## 6. Data Preparation in VS Code
+
+### Syntax Examples
+```python
+import pandas as pd
+
+# Load CSV
+patients1 = pd.read_csv('data/patients.csv')
+
+# Inspect
+print(patients1.head().to_string())
+print(patients1.shape)
+print(patients1.columns.tolist())
+print(patients1.dtypes)
+
+# Missing value analysis
+missing_counts = patients1.isnull().sum()
+missing_percent = patients1.isnull().mean() * 100
+
+# Data type conversion
+patients1['Age'] = patients1['Age'].astype(int)
+patients1['Id'] = patients1['Id'].astype(str)
+patients1['Gender'] = patients1['Gender'].astype('category')
+
+# Frequency counts
+freq = patients1['Gender'].value_counts(dropna=False)
 
 
 Explain the cleaning requirements for your specific data.
 Keep columns BIRTHDATE, DEATHDATE, GENDER, RACE, ETHNICITY,'MARITAL' , CITY, COUNTY, BIRTHPLACE, STATE, ZIP (with imputation), HEALTHCARE_EXPENSES, HEALTHCARE_COVERAGE, LAT ,  LON
 Drop columns Id, SSN, DRIVERS, PASSPORT, PREFIX, FIRST, LAST, SUFFIX, MAIDEN, ADDRESS
-handling missing values like DEATHDATE
+handling missing values like DEATHDATE, Set STOP for conditons data to the date of data extraction.
 Impute missing values like Deathdtate, placeholder like 9999-12-31, marital
 BIRTHDATE, DEATHDATE  ==> standardzing date formats
 Derive new variables: create age from birthdate, Age can be calculated based on the birthdate and today or deathdate - birthdate
@@ -195,7 +308,9 @@ Utilization intensity (patients seeing many providers with high utilization may 
 Geographic access (distance to providers).
 Average expense by age group, race, gender.
 coverge analyssis. healthcare expenses vs healthcare_coverage
-most commonidagnissi in the population
+most common diagnosis in the population
+identify high-risk patients with multiple conditions.
+
 
 
 Predictive modeling of healthcare risk
