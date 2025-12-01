@@ -214,6 +214,10 @@ Publicly available data is sourced from [Synthea Synthetic Health Data](https://
 - One-hot encode categorical features (`Gender`, `Race`, `Marital`, `City`).
 - Detect outliers using IQR or Z-scores.
 
+### Predictive Modeling**
+   - Machine learning models: LASSO regression, logistic regression, random forest.
+   - Target: health insurance risk (high, medium, low) or healthcare expense prediction.
+
 ---
 
 ## 3. Exploratory Data Analysis (EDA)
@@ -250,9 +254,15 @@ Publicly available data is sourced from [Synthea Synthetic Health Data](https://
 - Combine patients + conditions + immunizations + procedures + medications to predict:
   - High-risk patients
   - Insurance costs
-- Models used: Linear Regression, LASSO, Random Forest, Logistic Regression.
+- Models used: Linear Regression, LASSO.
 
 ---
+## Project Report
+
+The full project report is available on Overleaf:
+[View Full Report on Overleaf](https://www.overleaf.com/read/jknmnswpvtpg#11e682)
+
+
 
 ## 6. Data Preparation in VS Code
 
